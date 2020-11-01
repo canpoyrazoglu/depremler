@@ -1,0 +1,2 @@
+# depremler
+[🇹🇷] Depremleri görselleştirme çalışmalarım.
