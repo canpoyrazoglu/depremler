@@ -31,7 +31,7 @@
             #title{
                 font-size: 3vw;
                 left: 3vw;
-                top: 2vh;
+                top: 2vw;
             }
             footer{
                 position: absolute;
@@ -41,23 +41,34 @@
                 bottom: 3vh;
             }
             #time{
-                position: absolute;
-                top: 3.3vh;
-                left: 6.4vw;
+                position: relative;
+                top: 0.9vw;
+                left: 0.2vw;
                 font-size: 2.3vw;
                 opacity: 0.7;
             }
+            #bottom{
+                bottom: 8vh;
+                left: 0;
+                right: 0;
+                align-items: center;
+                display: flex;
+                position: absolute;
+            }
             #magnitude{
-                padding-left: 1vw;
-                padding-right: 1vw;
-                padding-bottom: 2px;
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: 3vw;
+                padding-right: 3vw;
+                padding-bottom: 3px;
                 color: white;
-                position: relative;
-                top: 0.7vh;
+                justify-self: center;
                 font-weight: bold;
+                background-color: orange;
                 border-radius: 4px;
                 text-align: center;
-                font-size: 2vw;
+                font-size: 7vw;
+                transition: background-color 200ms linear;
             }
         </style>
           <script
@@ -70,10 +81,12 @@
         <div id='overlay'/>
         <span id='toparea'>
             <span id='title'>30 Ekim 2020 İzmir Depremi</span><br/>
-            <span id='magnitude'></span>
             <span id='time'></span>
         </span>
-       
+        <div id='bottom'>
+            <span id='magnitude'></span>
+        </div>
+        
         <footer> Veri görselleştirme: Can Poyrazoğlu<br/>
             Tüm veriler Kandilli Rasathanesi'nden alınmıştır. Ticari amaç içermemektedir.
         </footer>
@@ -909,13 +922,13 @@
                             clearInterval(intervalId);
                             setTimeout(() => {
                                 circle.setMap(null);
-                            }, 0.2 * targetRadius);
+                            }, diffWeight * 1000 * 0.16 * targetRadius);
                         }
                     }, 16.666, targetRadius);
                 }
                 const heatmap = new google.maps.visualization.HeatmapLayer({
                     data: [],
-                    radius: 60,
+                    radius: 48,
                     gradient: [
                         "transparent",
                         "#eebb22",
@@ -935,9 +948,9 @@
                 });
                 heatmap.setMap(map);
                 function iterateEntry(index){
-                    const heatMapData = data.slice(index + 1 - 24 < 0 ? 0 : index + 1 - 24, index).map(entry => ({
+                    const heatMapData = data.slice(index + 1 - 30 < 0 ? 0 : index + 1 - 30, index).map(entry => ({
                         location: new google.maps.LatLng(parseFloat(entry.lat), parseFloat(entry.lon)),
-                        weight: entry.power * 1000
+                        weight: Math.sqrt(entry.power) * 800
                     })) 
                     console.log(heatMapData.length);
                     setTimeout(() => {
@@ -952,7 +965,7 @@
                     magTag.innerText = power;
                     const circle = new google.maps.Circle({
                         fillColor: color,
-                        fillOpacity: power / 10,
+                        fillOpacity: power / 16,
                         strokeColor: color,
                         strokeOpacity: 0,
                         map,
